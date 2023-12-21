@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            ListViewItem listViewItem3 = new ListViewItem(new ListViewItem.ListViewSubItem[] { new ListViewItem.ListViewSubItem(null, "1.", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "What is the best way to protect S3 bucket from public access?", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "Submitted", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)) }, -1);
-            ListViewItem listViewItem4 = new ListViewItem(new ListViewItem.ListViewSubItem[] { new ListViewItem.ListViewSubItem(null, "2.", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "Review the following Security Group settings and advise which setting will allow My SQL access within the VPC network?", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "Skipped", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)) }, -1);
+            ListViewItem listViewItem1 = new ListViewItem(new ListViewItem.ListViewSubItem[] { new ListViewItem.ListViewSubItem(null, "1.", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "What is the best way to protect S3 bucket from public access?", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "Submitted", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)) }, -1);
+            ListViewItem listViewItem2 = new ListViewItem(new ListViewItem.ListViewSubItem[] { new ListViewItem.ListViewSubItem(null, "2.", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "Review the following Security Group settings and advise which setting will allow My SQL access within the VPC network?", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)), new ListViewItem.ListViewSubItem(null, "Skipped", SystemColors.WindowText, SystemColors.Window, new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point)) }, -1);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TakeExamReviewForm));
             groupBoxQuesions = new GroupBox();
             labelHint = new Label();
             listViewQuestions = new ListView();
@@ -38,7 +39,10 @@
             columnHeader2 = new ColumnHeader();
             columnHeader3 = new ColumnHeader();
             toolTipButton = new ToolTip(components);
-            buttonSubmit = new Button();
+            buttonReviewSkipped = new Button();
+            buttonClose = new Button();
+            buttonReviewAll = new Button();
+            buttonReviewMarked = new Button();
             groupBoxQuesions.SuspendLayout();
             SuspendLayout();
             // 
@@ -47,7 +51,7 @@
             groupBoxQuesions.Controls.Add(labelHint);
             groupBoxQuesions.Controls.Add(listViewQuestions);
             groupBoxQuesions.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            groupBoxQuesions.Location = new Point(13, 9);
+            groupBoxQuesions.Location = new Point(13, 43);
             groupBoxQuesions.Margin = new Padding(4, 5, 4, 5);
             groupBoxQuesions.Name = "groupBoxQuesions";
             groupBoxQuesions.Padding = new Padding(4, 5, 4, 5);
@@ -59,10 +63,10 @@
             // labelHint
             // 
             labelHint.AutoSize = true;
-            labelHint.Font = new Font("Segoe UI Semilight", 9F, FontStyle.Italic, GraphicsUnit.Point);
+            labelHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             labelHint.Location = new Point(11, 576);
             labelHint.Name = "labelHint";
-            labelHint.Size = new Size(255, 25);
+            labelHint.Size = new Size(269, 25);
             labelHint.TabIndex = 23;
             labelHint.Text = "Double click to Review Question";
             // 
@@ -72,7 +76,7 @@
             listViewQuestions.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             listViewQuestions.FullRowSelect = true;
             listViewQuestions.GridLines = true;
-            listViewQuestions.Items.AddRange(new ListViewItem[] { listViewItem3, listViewItem4 });
+            listViewQuestions.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             listViewQuestions.Location = new Point(11, 34);
             listViewQuestions.Margin = new Padding(4, 5, 4, 5);
             listViewQuestions.Name = "listViewQuestions";
@@ -80,6 +84,7 @@
             listViewQuestions.TabIndex = 0;
             listViewQuestions.UseCompatibleStateImageBehavior = false;
             listViewQuestions.View = View.Details;
+            listViewQuestions.DoubleClick += listViewQuestions_DoubleClick;
             // 
             // columnHeader1
             // 
@@ -97,30 +102,63 @@
             columnHeader3.TextAlign = HorizontalAlignment.Center;
             columnHeader3.Width = 115;
             // 
-            // buttonSubmit
+            // buttonReviewSkipped
             // 
-            buttonSubmit.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonSubmit.Location = new Point(396, 659);
-            buttonSubmit.Name = "buttonSubmit";
-            buttonSubmit.Size = new Size(100, 45);
-            buttonSubmit.TabIndex = 16;
-            buttonSubmit.Text = "Submit";
-            buttonSubmit.UseVisualStyleBackColor = true;
-            buttonSubmit.Click += buttonSubmit_Click;
+            buttonReviewSkipped.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonReviewSkipped.Location = new Point(595, 687);
+            buttonReviewSkipped.Name = "buttonReviewSkipped";
+            buttonReviewSkipped.Size = new Size(163, 45);
+            buttonReviewSkipped.TabIndex = 16;
+            buttonReviewSkipped.Text = "Review Skipped";
+            buttonReviewSkipped.UseVisualStyleBackColor = true;
+            buttonReviewSkipped.Click += buttonReviewSkipped_Click;
+            // 
+            // buttonClose
+            // 
+            buttonClose.Image = (Image)resources.GetObject("buttonClose.Image");
+            buttonClose.Location = new Point(899, -6);
+            buttonClose.Name = "buttonClose";
+            buttonClose.Size = new Size(55, 58);
+            buttonClose.TabIndex = 17;
+            buttonClose.UseVisualStyleBackColor = true;
+            // 
+            // buttonReviewAll
+            // 
+            buttonReviewAll.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonReviewAll.Location = new Point(415, 687);
+            buttonReviewAll.Name = "buttonReviewAll";
+            buttonReviewAll.Size = new Size(163, 45);
+            buttonReviewAll.TabIndex = 18;
+            buttonReviewAll.Text = "Review All";
+            buttonReviewAll.UseVisualStyleBackColor = true;
+            buttonReviewAll.Click += buttonReviewAll_Click;
+            // 
+            // buttonReviewMarked
+            // 
+            buttonReviewMarked.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonReviewMarked.Location = new Point(776, 687);
+            buttonReviewMarked.Name = "buttonReviewMarked";
+            buttonReviewMarked.Size = new Size(163, 45);
+            buttonReviewMarked.TabIndex = 19;
+            buttonReviewMarked.Text = "Review Marked";
+            buttonReviewMarked.UseVisualStyleBackColor = true;
+            buttonReviewMarked.Click += buttonReviewMarked_Click;
             // 
             // TakeExamReviewForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(952, 714);
+            ClientSize = new Size(952, 744);
             ControlBox = false;
-            Controls.Add(buttonSubmit);
+            Controls.Add(buttonReviewMarked);
+            Controls.Add(buttonReviewAll);
+            Controls.Add(buttonClose);
+            Controls.Add(buttonReviewSkipped);
             Controls.Add(groupBoxQuesions);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "TakeExamReviewForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Review Quesions";
-            TopMost = true;
             groupBoxQuesions.ResumeLayout(false);
             groupBoxQuesions.PerformLayout();
             ResumeLayout(false);
@@ -135,6 +173,9 @@
         private ColumnHeader columnHeader3;
         private ToolTip toolTipButton;
         private Label labelHint;
-        private Button buttonSubmit;
+        private Button buttonReviewSkipped;
+        private Button buttonClose;
+        private Button buttonReviewAll;
+        private Button buttonReviewMarked;
     }
 }

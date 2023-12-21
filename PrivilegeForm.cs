@@ -17,11 +17,13 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 InitializeComponent();
                 SetStatusMessage("Fetching Data....", Color.LightGreen);
                 Task.Run(() => InitPrivilegeList()).Wait();
                 hlabelId.Text = "";
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -74,27 +76,32 @@ namespace ExamMaster
         {
             try
             {
-                SetStatusMessage("Updating Privilege Data....", Color.LightGreen);
-                List<PrivilegeClass> privilege = new List<PrivilegeClass>();
-                privilege.Add(new PrivilegeClass());
-                privilege[0].id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
-                privilege[0].privileges = textBoxPrivilege.Text;
-                if (CheckDuplicatePrivilege())
+                if (ValidateData())
                 {
-                    APIStatus res = Task.Run(() => PrivilegeAPIClass.putPrivilege(privilege)).Result;
-                    listViewPrivileges.SelectedItems[0].SubItems[1].Text = textBoxPrivilege.Text;
+                    Cursor = Cursors.WaitCursor;
+                    SetStatusMessage("Updating Privilege Data....", Color.LightGreen);
+                    List<PrivilegeClass> privilege = new List<PrivilegeClass>();
+                    privilege.Add(new PrivilegeClass());
+                    privilege[0].id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
+                    privilege[0].privileges = textBoxPrivilege.Text;
+                    if (privilege[0].id > 0)
+                    {
+                        APIStatus res = Task.Run(() => PrivilegeAPIClass.putPrivilege(privilege)).Result;
+                        listViewPrivileges.SelectedItems[0].SubItems[0].Text = textBoxPrivilege.Text;
+                    }
+                    else
+                    {
+                        APIStatus res = Task.Run(() => PrivilegeAPIClass.postPrivilege(privilege)).Result;
+                        hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.Message);
+                        ListViewItem listItem = listViewPrivileges.Items.Add(privilege[0].privileges);
+                        listItem.Tag = UtilClass.RegxMatch(@"\d+", res.Message);
+                        listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                        listViewPrivileges.SelectedItems.Clear();
+                        listViewPrivileges.Items[listViewPrivileges.Items.Count - 1].Selected = true;
+                    }
+                    SetStatusMessage("Updated Successfully....", Color.LimeGreen);
+                    Cursor = Cursors.Default;
                 }
-                else
-                {
-                    APIStatus res = Task.Run(() => PrivilegeAPIClass.postPrivilege(privilege)).Result;
-                    hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.message);
-                    ListViewItem listItem = listViewPrivileges.Items.Add(privilege[0].privileges);
-                    listItem.Tag = UtilClass.RegxMatch(@"\d+", res.message);
-                    listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                    listViewPrivileges.SelectedItems.Clear();
-                    listViewPrivileges.Items[listViewPrivileges.Items.Count - 1].Selected = true;
-                }
-                SetStatusMessage("Updated Successfully....", Color.LimeGreen);
             }
             catch (Exception ex)
             {
@@ -104,6 +111,20 @@ namespace ExamMaster
             }
         }
 
+        private bool ValidateData()
+        {
+            if (textBoxPrivilege.Text.Trim().Length <= 0) 
+            {
+                SetStatusMessage("Privilege Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            if (hlabelId.Text == "" && CheckDuplicatePrivilege())
+            {
+                SetStatusMessage("Duplicate Privilege Data....", Color.LemonChiffon);
+                return false;
+            }
+            return true;
+        }
         private bool CheckDuplicatePrivilege()
         {
             foreach (ListViewItem eachItem in listViewPrivileges.Items)
@@ -124,11 +145,13 @@ namespace ExamMaster
                 {
                     if (hlabelId.Text != String.Empty)
                     {
+                        Cursor = Cursors.WaitCursor;
                         SetStatusMessage("Deleting Privilege Data....", Color.LightGreen);
                         APIStatus res = Task.Run(() => PrivilegeAPIClass.delPrivilege(Int32.Parse(hlabelId.Text))).Result;
                         listViewPrivileges.SelectedItems[0].Remove();
                         buttonClear_Click(sender, e);
                         SetStatusMessage("Privilege Data Deleted Successfully....", Color.LimeGreen);
+                        Cursor = Cursors.Default;
                     }
                 }
             }

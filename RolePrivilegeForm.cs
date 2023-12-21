@@ -17,11 +17,13 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 InitializeComponent();
                 SetStatusMessage("Fetching Data....", Color.LightGreen);
                 Task.Run(() => InitRoleList()).Wait();
                 hlabelId.Text = "";
                 buttonClear_Click(null, null);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -79,6 +81,7 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 SetStatusMessage("Fetching Data....", Color.LightGreen);
                 hlabelId.Text = listViewRoles.SelectedItems[0].Tag.ToString();
                 List<RolePrivilegeClass> rolePrivileges = Task.Run(() => InitPrivilegeList(Int32.Parse(hlabelId.Text))).Result;
@@ -111,6 +114,7 @@ namespace ExamMaster
                 }
 
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -161,6 +165,7 @@ namespace ExamMaster
             {
                 if (listViewPrivileges.Items.Count > 0)
                 {
+                    Cursor = Cursors.WaitCursor;
                     SetStatusMessage("Updating Role Privileges Data....", Color.LightGreen);
                     APIStatus res = Task.Run(() => RolePrivilegeAPIClass.delRolePrivilege(Int32.Parse(hlabelId.Text))).Result;
                     List<RolePrivilegeClass> rolePrivileges = new List<RolePrivilegeClass>();
@@ -174,6 +179,11 @@ namespace ExamMaster
                         rolePrivileges.Remove(rolePrivilege);
                     }
                     SetStatusMessage("", SystemColors.Control);
+                    Cursor = Cursors.Default;
+                }
+                else
+                {
+                    SetStatusMessage("No Role has been assigned....", Color.LemonChiffon);
                 }
             }
             catch (Exception ex)
@@ -192,10 +202,12 @@ namespace ExamMaster
                 {
                     if (listViewPrivileges.Items.Count > 0)
                     {
+                        Cursor = Cursors.WaitCursor;
                         SetStatusMessage("Deleting Role Privileges Data....", Color.LightGreen);
                         APIStatus res = Task.Run(() => RolePrivilegeAPIClass.delRolePrivilege(Int32.Parse(hlabelId.Text))).Result;
                         buttonClear_Click(sender, e);
                         SetStatusMessage("", SystemColors.Control);
+                        Cursor = Cursors.Default;
                     }
                 }
             }

@@ -1,6 +1,6 @@
 ﻿namespace ExamMaster
 {
-    partial class TakeExamForm
+    partial class ExamHistoryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TakeExamForm));
-            groupBoxQuestion = new GroupBox();
-            textBoxQuestion = new TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExamHistoryForm));
+            buttonClose = new Button();
+            buttonPrevious = new Button();
+            buttonNext = new Button();
             groupBoxAnswer = new GroupBox();
+            pictureBoxAns4Wrong = new PictureBox();
+            pictureBoxAns3Wrong = new PictureBox();
+            pictureBoxAns2Wrong = new PictureBox();
+            pictureBoxAns1Wrong = new PictureBox();
+            pictureBoxAns4Correct = new PictureBox();
+            pictureBoxAns3Correct = new PictureBox();
+            pictureBoxAns2Correct = new PictureBox();
+            pictureBoxAns1Correct = new PictureBox();
             radioButtonAnswer4 = new RadioButton();
             radioButtonAnswer3 = new RadioButton();
             radioButtonAnswer2 = new RadioButton();
@@ -49,47 +58,65 @@
             textBoxAnswer3 = new TextBox();
             textBoxAnswer2 = new TextBox();
             textBoxAnswer1 = new TextBox();
-            buttonSubmit = new Button();
-            buttonSkip = new Button();
-            buttonReview = new Button();
-            buttonNext = new Button();
-            buttonPrevious = new Button();
-            buttonClose = new Button();
-            labelTimer = new Label();
-            buttonFinalizeExam = new Button();
+            groupBoxQuestion = new GroupBox();
+            textBoxQuestion = new TextBox();
             statusStripMsg = new StatusStrip();
             toolStripStatusLabelMsg = new ToolStripStatusLabel();
-            buttonSubmitExam = new Button();
-            labelExamName = new Label();
-            groupBoxQuestion.SuspendLayout();
             groupBoxAnswer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns4Wrong).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns3Wrong).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns2Wrong).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns1Wrong).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns4Correct).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns3Correct).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns2Correct).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns1Correct).BeginInit();
+            groupBoxQuestion.SuspendLayout();
             statusStripMsg.SuspendLayout();
             SuspendLayout();
             // 
-            // groupBoxQuestion
+            // buttonClose
             // 
-            groupBoxQuestion.Controls.Add(textBoxQuestion);
-            groupBoxQuestion.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            groupBoxQuestion.Location = new Point(24, 49);
-            groupBoxQuestion.Name = "groupBoxQuestion";
-            groupBoxQuestion.Size = new Size(1193, 246);
-            groupBoxQuestion.TabIndex = 1;
-            groupBoxQuestion.TabStop = false;
-            groupBoxQuestion.Text = "Question";
+            buttonClose.Image = (Image)resources.GetObject("buttonClose.Image");
+            buttonClose.Location = new Point(1185, 0);
+            buttonClose.Name = "buttonClose";
+            buttonClose.Size = new Size(55, 58);
+            buttonClose.TabIndex = 20;
+            buttonClose.UseVisualStyleBackColor = true;
+            buttonClose.Click += buttonClose_Click;
             // 
-            // textBoxQuestion
+            // buttonPrevious
             // 
-            textBoxQuestion.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxQuestion.Location = new Point(16, 35);
-            textBoxQuestion.Multiline = true;
-            textBoxQuestion.Name = "textBoxQuestion";
-            textBoxQuestion.ReadOnly = true;
-            textBoxQuestion.Size = new Size(1162, 194);
-            textBoxQuestion.TabIndex = 1;
-            textBoxQuestion.TabStop = false;
+            buttonPrevious.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonPrevious.Location = new Point(913, 732);
+            buttonPrevious.Name = "buttonPrevious";
+            buttonPrevious.Size = new Size(140, 59);
+            buttonPrevious.TabIndex = 19;
+            buttonPrevious.Text = "Previous";
+            buttonPrevious.UseVisualStyleBackColor = true;
+            buttonPrevious.Click += buttonPrevious_Click;
+            // 
+            // buttonNext
+            // 
+            buttonNext.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonNext.Location = new Point(1075, 732);
+            buttonNext.Name = "buttonNext";
+            buttonNext.Size = new Size(140, 59);
+            buttonNext.TabIndex = 0;
+            buttonNext.Text = "Next";
+            buttonNext.UseVisualStyleBackColor = true;
+            buttonNext.Click += buttonNext_Click;
             // 
             // groupBoxAnswer
             // 
+            groupBoxAnswer.Controls.Add(pictureBoxAns4Wrong);
+            groupBoxAnswer.Controls.Add(pictureBoxAns3Wrong);
+            groupBoxAnswer.Controls.Add(pictureBoxAns2Wrong);
+            groupBoxAnswer.Controls.Add(pictureBoxAns1Wrong);
+            groupBoxAnswer.Controls.Add(pictureBoxAns4Correct);
+            groupBoxAnswer.Controls.Add(pictureBoxAns3Correct);
+            groupBoxAnswer.Controls.Add(pictureBoxAns2Correct);
+            groupBoxAnswer.Controls.Add(pictureBoxAns1Correct);
             groupBoxAnswer.Controls.Add(radioButtonAnswer4);
             groupBoxAnswer.Controls.Add(radioButtonAnswer3);
             groupBoxAnswer.Controls.Add(radioButtonAnswer2);
@@ -108,12 +135,92 @@
             groupBoxAnswer.Controls.Add(textBoxAnswer2);
             groupBoxAnswer.Controls.Add(textBoxAnswer1);
             groupBoxAnswer.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            groupBoxAnswer.Location = new Point(24, 301);
+            groupBoxAnswer.Location = new Point(22, 302);
             groupBoxAnswer.Name = "groupBoxAnswer";
             groupBoxAnswer.Size = new Size(1193, 424);
-            groupBoxAnswer.TabIndex = 2;
+            groupBoxAnswer.TabIndex = 17;
             groupBoxAnswer.TabStop = false;
             groupBoxAnswer.Text = "Answers";
+            // 
+            // pictureBoxAns4Wrong
+            // 
+            pictureBoxAns4Wrong.Image = (Image)resources.GetObject("pictureBoxAns4Wrong.Image");
+            pictureBoxAns4Wrong.Location = new Point(9, 353);
+            pictureBoxAns4Wrong.Name = "pictureBoxAns4Wrong";
+            pictureBoxAns4Wrong.Size = new Size(28, 28);
+            pictureBoxAns4Wrong.TabIndex = 25;
+            pictureBoxAns4Wrong.TabStop = false;
+            pictureBoxAns4Wrong.Visible = false;
+            // 
+            // pictureBoxAns3Wrong
+            // 
+            pictureBoxAns3Wrong.Image = (Image)resources.GetObject("pictureBoxAns3Wrong.Image");
+            pictureBoxAns3Wrong.Location = new Point(9, 270);
+            pictureBoxAns3Wrong.Name = "pictureBoxAns3Wrong";
+            pictureBoxAns3Wrong.Size = new Size(28, 28);
+            pictureBoxAns3Wrong.TabIndex = 24;
+            pictureBoxAns3Wrong.TabStop = false;
+            pictureBoxAns3Wrong.Visible = false;
+            // 
+            // pictureBoxAns2Wrong
+            // 
+            pictureBoxAns2Wrong.Image = (Image)resources.GetObject("pictureBoxAns2Wrong.Image");
+            pictureBoxAns2Wrong.Location = new Point(8, 191);
+            pictureBoxAns2Wrong.Name = "pictureBoxAns2Wrong";
+            pictureBoxAns2Wrong.Size = new Size(28, 28);
+            pictureBoxAns2Wrong.TabIndex = 23;
+            pictureBoxAns2Wrong.TabStop = false;
+            pictureBoxAns2Wrong.Visible = false;
+            // 
+            // pictureBoxAns1Wrong
+            // 
+            pictureBoxAns1Wrong.Image = (Image)resources.GetObject("pictureBoxAns1Wrong.Image");
+            pictureBoxAns1Wrong.Location = new Point(9, 109);
+            pictureBoxAns1Wrong.Name = "pictureBoxAns1Wrong";
+            pictureBoxAns1Wrong.Size = new Size(28, 28);
+            pictureBoxAns1Wrong.TabIndex = 22;
+            pictureBoxAns1Wrong.TabStop = false;
+            pictureBoxAns1Wrong.Visible = false;
+            // 
+            // pictureBoxAns4Correct
+            // 
+            pictureBoxAns4Correct.Image = (Image)resources.GetObject("pictureBoxAns4Correct.Image");
+            pictureBoxAns4Correct.Location = new Point(9, 354);
+            pictureBoxAns4Correct.Name = "pictureBoxAns4Correct";
+            pictureBoxAns4Correct.Size = new Size(28, 28);
+            pictureBoxAns4Correct.TabIndex = 21;
+            pictureBoxAns4Correct.TabStop = false;
+            pictureBoxAns4Correct.Visible = false;
+            // 
+            // pictureBoxAns3Correct
+            // 
+            pictureBoxAns3Correct.Image = (Image)resources.GetObject("pictureBoxAns3Correct.Image");
+            pictureBoxAns3Correct.Location = new Point(9, 270);
+            pictureBoxAns3Correct.Name = "pictureBoxAns3Correct";
+            pictureBoxAns3Correct.Size = new Size(28, 28);
+            pictureBoxAns3Correct.TabIndex = 20;
+            pictureBoxAns3Correct.TabStop = false;
+            pictureBoxAns3Correct.Visible = false;
+            // 
+            // pictureBoxAns2Correct
+            // 
+            pictureBoxAns2Correct.Image = (Image)resources.GetObject("pictureBoxAns2Correct.Image");
+            pictureBoxAns2Correct.Location = new Point(9, 191);
+            pictureBoxAns2Correct.Name = "pictureBoxAns2Correct";
+            pictureBoxAns2Correct.Size = new Size(28, 28);
+            pictureBoxAns2Correct.TabIndex = 19;
+            pictureBoxAns2Correct.TabStop = false;
+            pictureBoxAns2Correct.Visible = false;
+            // 
+            // pictureBoxAns1Correct
+            // 
+            pictureBoxAns1Correct.Image = (Image)resources.GetObject("pictureBoxAns1Correct.Image");
+            pictureBoxAns1Correct.Location = new Point(9, 109);
+            pictureBoxAns1Correct.Name = "pictureBoxAns1Correct";
+            pictureBoxAns1Correct.Size = new Size(28, 28);
+            pictureBoxAns1Correct.TabIndex = 18;
+            pictureBoxAns1Correct.TabStop = false;
+            pictureBoxAns1Correct.Visible = false;
             // 
             // radioButtonAnswer4
             // 
@@ -204,7 +311,8 @@
             labelCorrectAnswer.Name = "labelCorrectAnswer";
             labelCorrectAnswer.Size = new Size(79, 56);
             labelCorrectAnswer.TabIndex = 9;
-            labelCorrectAnswer.Text = "Select Answer";
+            labelCorrectAnswer.Text = "Correct Answer";
+            labelCorrectAnswer.TextAlign = ContentAlignment.TopCenter;
             // 
             // labelFour
             // 
@@ -282,101 +390,37 @@
             textBoxAnswer1.Size = new Size(1053, 78);
             textBoxAnswer1.TabIndex = 1;
             // 
-            // buttonSubmit
+            // groupBoxQuestion
             // 
-            buttonSubmit.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonSubmit.Location = new Point(297, 731);
-            buttonSubmit.Name = "buttonSubmit";
-            buttonSubmit.Size = new Size(140, 59);
-            buttonSubmit.TabIndex = 0;
-            buttonSubmit.Text = "Submit";
-            buttonSubmit.UseVisualStyleBackColor = true;
-            buttonSubmit.Click += buttonSubmit_Click;
+            groupBoxQuestion.Controls.Add(textBoxQuestion);
+            groupBoxQuestion.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            groupBoxQuestion.Location = new Point(22, 50);
+            groupBoxQuestion.Name = "groupBoxQuestion";
+            groupBoxQuestion.Size = new Size(1193, 246);
+            groupBoxQuestion.TabIndex = 16;
+            groupBoxQuestion.TabStop = false;
+            groupBoxQuestion.Text = "Question";
             // 
-            // buttonSkip
+            // textBoxQuestion
             // 
-            buttonSkip.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonSkip.Location = new Point(440, 731);
-            buttonSkip.Name = "buttonSkip";
-            buttonSkip.Size = new Size(140, 59);
-            buttonSkip.TabIndex = 4;
-            buttonSkip.Text = "Skip";
-            buttonSkip.UseVisualStyleBackColor = true;
-            buttonSkip.Click += buttonNext_Click;
-            // 
-            // buttonReview
-            // 
-            buttonReview.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonReview.Location = new Point(583, 731);
-            buttonReview.Name = "buttonReview";
-            buttonReview.Size = new Size(140, 59);
-            buttonReview.TabIndex = 5;
-            buttonReview.Text = "Mark Review";
-            buttonReview.UseVisualStyleBackColor = true;
-            buttonReview.Click += buttonReview_Click;
-            // 
-            // buttonNext
-            // 
-            buttonNext.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonNext.Location = new Point(726, 731);
-            buttonNext.Name = "buttonNext";
-            buttonNext.Size = new Size(140, 59);
-            buttonNext.TabIndex = 6;
-            buttonNext.Text = "Next";
-            buttonNext.UseVisualStyleBackColor = true;
-            buttonNext.Click += buttonNext_Click;
-            // 
-            // buttonPrevious
-            // 
-            buttonPrevious.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonPrevious.Location = new Point(154, 731);
-            buttonPrevious.Name = "buttonPrevious";
-            buttonPrevious.Size = new Size(140, 59);
-            buttonPrevious.TabIndex = 7;
-            buttonPrevious.Text = "Previous";
-            buttonPrevious.UseVisualStyleBackColor = true;
-            buttonPrevious.Click += buttonPrevious_Click;
-            // 
-            // buttonClose
-            // 
-            buttonClose.Image = (Image)resources.GetObject("buttonClose.Image");
-            buttonClose.Location = new Point(1187, -1);
-            buttonClose.Name = "buttonClose";
-            buttonClose.Size = new Size(55, 58);
-            buttonClose.TabIndex = 15;
-            buttonClose.UseVisualStyleBackColor = true;
-            buttonClose.Click += buttonClose_Click;
-            // 
-            // labelTimer
-            // 
-            labelTimer.AutoSize = true;
-            labelTimer.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            labelTimer.Location = new Point(24, 14);
-            labelTimer.Name = "labelTimer";
-            labelTimer.Size = new Size(104, 32);
-            labelTimer.TabIndex = 16;
-            labelTimer.Text = "03:00:00";
-            // 
-            // buttonFinalizeExam
-            // 
-            buttonFinalizeExam.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonFinalizeExam.Location = new Point(869, 731);
-            buttonFinalizeExam.Name = "buttonFinalizeExam";
-            buttonFinalizeExam.Size = new Size(140, 59);
-            buttonFinalizeExam.TabIndex = 17;
-            buttonFinalizeExam.Text = "Review Exam";
-            buttonFinalizeExam.UseVisualStyleBackColor = true;
-            buttonFinalizeExam.Click += buttonFinalizeExam_Click;
+            textBoxQuestion.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            textBoxQuestion.Location = new Point(16, 35);
+            textBoxQuestion.Multiline = true;
+            textBoxQuestion.Name = "textBoxQuestion";
+            textBoxQuestion.ReadOnly = true;
+            textBoxQuestion.Size = new Size(1162, 194);
+            textBoxQuestion.TabIndex = 1;
+            textBoxQuestion.TabStop = false;
             // 
             // statusStripMsg
             // 
             statusStripMsg.BackColor = SystemColors.Control;
             statusStripMsg.ImageScalingSize = new Size(24, 24);
             statusStripMsg.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelMsg });
-            statusStripMsg.Location = new Point(0, 804);
+            statusStripMsg.Location = new Point(0, 799);
             statusStripMsg.Name = "statusStripMsg";
             statusStripMsg.Size = new Size(1241, 35);
-            statusStripMsg.TabIndex = 22;
+            statusStripMsg.TabIndex = 21;
             // 
             // toolStripStatusLabelMsg
             // 
@@ -385,57 +429,35 @@
             toolStripStatusLabelMsg.Size = new Size(226, 28);
             toolStripStatusLabelMsg.Text = "toolStripStatusLabelMsg";
             // 
-            // buttonSubmitExam
-            // 
-            buttonSubmitExam.BackColor = Color.ForestGreen;
-            buttonSubmitExam.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            buttonSubmitExam.ForeColor = Color.White;
-            buttonSubmitExam.Location = new Point(1077, 731);
-            buttonSubmitExam.Name = "buttonSubmitExam";
-            buttonSubmitExam.Size = new Size(140, 59);
-            buttonSubmitExam.TabIndex = 23;
-            buttonSubmitExam.Text = "Submit  Exam";
-            buttonSubmitExam.UseVisualStyleBackColor = false;
-            buttonSubmitExam.Click += buttonSubmitExam_Click;
-            // 
-            // labelExamName
-            // 
-            labelExamName.AutoSize = true;
-            labelExamName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            labelExamName.Location = new Point(424, 20);
-            labelExamName.Name = "labelExamName";
-            labelExamName.Size = new Size(437, 28);
-            labelExamName.TabIndex = 24;
-            labelExamName.Text = "AWS Solutions Architect – Associate (SAA-C03)";
-            // 
-            // TakeExamForm
+            // ExamHistoryForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1241, 839);
+            ClientSize = new Size(1241, 834);
             ControlBox = false;
-            Controls.Add(labelExamName);
-            Controls.Add(buttonSubmitExam);
             Controls.Add(statusStripMsg);
-            Controls.Add(buttonFinalizeExam);
-            Controls.Add(labelTimer);
             Controls.Add(buttonClose);
             Controls.Add(buttonPrevious);
             Controls.Add(buttonNext);
-            Controls.Add(buttonReview);
-            Controls.Add(buttonSkip);
-            Controls.Add(buttonSubmit);
             Controls.Add(groupBoxAnswer);
             Controls.Add(groupBoxQuestion);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Name = "TakeExamForm";
+            Name = "ExamHistoryForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Take Exam";
-            Shown += TakeExamForm_Shown;
-            groupBoxQuestion.ResumeLayout(false);
-            groupBoxQuestion.PerformLayout();
+            Text = "Review Exam";
+            TopMost = true;
             groupBoxAnswer.ResumeLayout(false);
             groupBoxAnswer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns4Wrong).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns3Wrong).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns2Wrong).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns1Wrong).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns4Correct).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns3Correct).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns2Correct).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAns1Correct).EndInit();
+            groupBoxQuestion.ResumeLayout(false);
+            groupBoxQuestion.PerformLayout();
             statusStripMsg.ResumeLayout(false);
             statusStripMsg.PerformLayout();
             ResumeLayout(false);
@@ -444,9 +466,14 @@
 
         #endregion
 
-        private GroupBox groupBoxQuestion;
-        private TextBox textBoxQuestion;
+        private Button buttonClose;
+        private Button buttonPrevious;
+        private Button buttonNext;
         private GroupBox groupBoxAnswer;
+        private RadioButton radioButtonAnswer4;
+        private RadioButton radioButtonAnswer3;
+        private RadioButton radioButtonAnswer2;
+        private RadioButton radioButtonAnswer1;
         private CheckBox checkBoxAnswer4;
         private CheckBox checkBoxAnswer3;
         private CheckBox checkBoxAnswer2;
@@ -460,21 +487,17 @@
         private TextBox textBoxAnswer3;
         private TextBox textBoxAnswer2;
         private TextBox textBoxAnswer1;
-        private RadioButton radioButtonAnswer4;
-        private RadioButton radioButtonAnswer3;
-        private RadioButton radioButtonAnswer2;
-        private RadioButton radioButtonAnswer1;
-        private Button buttonSubmit;
-        private Button buttonSkip;
-        private Button buttonReview;
-        private Button buttonNext;
-        private Button buttonPrevious;
-        private Button buttonClose;
-        private Label labelTimer;
-        private Button buttonFinalizeExam;
+        private GroupBox groupBoxQuestion;
+        private TextBox textBoxQuestion;
         private StatusStrip statusStripMsg;
         private ToolStripStatusLabel toolStripStatusLabelMsg;
-        private Button buttonSubmitExam;
-        private Label labelExamName;
+        private PictureBox pictureBoxAns1Correct;
+        private PictureBox pictureBoxAns4Correct;
+        private PictureBox pictureBoxAns3Correct;
+        private PictureBox pictureBoxAns2Correct;
+        private PictureBox pictureBoxAns1Wrong;
+        private PictureBox pictureBoxAns4Wrong;
+        private PictureBox pictureBoxAns3Wrong;
+        private PictureBox pictureBoxAns2Wrong;
     }
 }

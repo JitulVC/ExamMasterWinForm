@@ -164,9 +164,10 @@
             // labelAPIKey
             // 
             labelAPIKey.AutoSize = true;
+            labelAPIKey.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelAPIKey.Location = new Point(27, 309);
             labelAPIKey.Name = "labelAPIKey";
-            labelAPIKey.Size = new Size(82, 28);
+            labelAPIKey.Size = new Size(87, 28);
             labelAPIKey.TabIndex = 7;
             labelAPIKey.Text = "API Key:";
             // 
@@ -189,9 +190,10 @@
             // labelRole
             // 
             labelRole.AutoSize = true;
+            labelRole.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelRole.Location = new Point(27, 218);
             labelRole.Name = "labelRole";
-            labelRole.Size = new Size(54, 28);
+            labelRole.Size = new Size(56, 28);
             labelRole.TabIndex = 4;
             labelRole.Text = "Role:";
             // 
@@ -206,9 +208,10 @@
             // labelUserName
             // 
             labelUserName.AutoSize = true;
+            labelUserName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelUserName.Location = new Point(27, 132);
             labelUserName.Name = "labelUserName";
-            labelUserName.Size = new Size(112, 28);
+            labelUserName.Size = new Size(118, 28);
             labelUserName.TabIndex = 2;
             labelUserName.Text = "User Name:";
             // 
@@ -223,9 +226,10 @@
             // labelUserAccount
             // 
             labelUserAccount.AutoSize = true;
+            labelUserAccount.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelUserAccount.Location = new Point(27, 50);
             labelUserAccount.Name = "labelUserAccount";
-            labelUserAccount.Size = new Size(132, 28);
+            labelUserAccount.Size = new Size(138, 28);
             labelUserAccount.TabIndex = 0;
             labelUserAccount.Text = "User Account:";
             // 

@@ -18,7 +18,7 @@ namespace ExamMaster
         public LoginForm()
         {
             InitializeComponent();
-            textBoxUserAccount.Text = "beckschng";
+            textBoxUserAccount.Text = "chongglenda"; // "beckschng";
             textBoxPasscode.Text = "123456";
         }
 
@@ -75,6 +75,7 @@ namespace ExamMaster
         {
             try
             {
+                await UtilClass.ValidateToken();
                 HttpClient httpClient = new HttpClient();
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);

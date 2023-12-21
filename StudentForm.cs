@@ -18,6 +18,7 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 InitializeComponent();
                 SetStatusMessage("Fetching Data....", Color.LightGreen);
                 Task.Run(() => InitStudentList()).Wait();
@@ -26,6 +27,7 @@ namespace ExamMaster
                 hlabelId.Text = "";
                 listViewExamHistory.Items.Clear();
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -99,15 +101,16 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 buttonClear_Click(sender, e);
                 SetStatusMessage("Fetching Student Data....", Color.LightGreen);
                 StudentClass student = new StudentClass();
                 string id = listViewStudents.SelectedItems[0].Tag.ToString();
                 hlabelId.Text = id;
-                student = Task.Run(() => StudentAPIClass.getStudent(Int32.Parse(id))).Result;
+                student = Task.Run(() => StudentAPIClass.getStudent(Int32.Parse(id),0)).Result;
 
                 List<StudentExamClass> studentExams = new List<StudentExamClass>();
-                studentExams = Task.Run(() => StudentExamAPIClass.getStudentExam(0, Int32.Parse(id))).Result;
+                studentExams = Task.Run(() => StudentExamAPIClass.getStudentExam(0, Int32.Parse(id),0)).Result;
 
                 if (studentExams is not null)
                 {
@@ -119,7 +122,7 @@ namespace ExamMaster
                         listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                         ListViewItem.ListViewSubItem subItem1 = listItem.SubItems.Add(studentexam.examscore.ToString());
                         ListViewItem.ListViewSubItem subItem2 = listItem.SubItems.Add(studentexam.attemptno.ToString());
-                        ListViewItem.ListViewSubItem subItem3 = listItem.SubItems.Add(studentexam.starttime.ToString());
+                        ListViewItem.ListViewSubItem subItem3 = listItem.SubItems.Add(studentexam.starttime.Substring(0, studentexam.starttime.IndexOf("T")));
                         subItem1.Font = new Font("Segeo UI", 10, FontStyle.Regular);
                         subItem2.Font = new Font("Segeo UI", 10, FontStyle.Regular);
                         subItem3.Font = new Font("Segeo UI", 10, FontStyle.Regular);
@@ -129,6 +132,7 @@ namespace ExamMaster
                 textBoxStudentName.Text = student.studentname;
                 comboBoxUserAccount.SelectedValue = student.userid;
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -151,27 +155,32 @@ namespace ExamMaster
         {
             try
             {
-                SetStatusMessage("Updating Student Data....", Color.LightGreen);
-                StudentClass student = new StudentClass();
-                student.id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
-                student.studentname = textBoxStudentName.Text;
-                student.userid = Int32.Parse(comboBoxUserAccount.SelectedValue.ToString());
-                if (student.id != 0)
+                if (ValidateData())
                 {
-                    APIStatus res = Task.Run(() => StudentAPIClass.putStudent(student)).Result;
-                    listViewStudents.SelectedItems[0].Text = textBoxStudentName.Text;
+                    Cursor = Cursors.WaitCursor;
+                    SetStatusMessage("Updating Student Data....", Color.LightGreen);
+                    StudentClass student = new StudentClass();
+                    student.id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
+                    student.studentname = textBoxStudentName.Text;
+                    student.userid = Int32.Parse(comboBoxUserAccount.SelectedValue.ToString());
+                    if (student.id != 0)
+                    {
+                        APIStatus res = Task.Run(() => StudentAPIClass.putStudent(student)).Result;
+                        listViewStudents.SelectedItems[0].Text = textBoxStudentName.Text;
+                    }
+                    else
+                    {
+                        APIStatus res = Task.Run(() => StudentAPIClass.postStudent(student)).Result;
+                        hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.Message);
+                        ListViewItem listItem = listViewStudents.Items.Add(student.studentname);
+                        listItem.Tag = UtilClass.RegxMatch(@"\d+", res.Message);
+                        listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                        listViewStudents.SelectedItems.Clear();
+                        listViewStudents.Items[listViewStudents.Items.Count - 1].Selected = true;
+                    }
+                    SetStatusMessage("Updated Successfully....", Color.LimeGreen);
+                    Cursor = Cursors.Default;
                 }
-                else
-                {
-                    APIStatus res = Task.Run(() => StudentAPIClass.postStudent(student)).Result;
-                    hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.message);
-                    ListViewItem listItem = listViewStudents.Items.Add(student.studentname);
-                    listItem.Tag = UtilClass.RegxMatch(@"\d+", res.message);
-                    listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                    listViewStudents.SelectedItems.Clear();
-                    listViewStudents.Items[listViewStudents.Items.Count - 1].Selected = true;
-                }
-                SetStatusMessage("Updated Successfully....", Color.LimeGreen);
             }
             catch (Exception ex)
             {
@@ -181,6 +190,20 @@ namespace ExamMaster
             }
         }
 
+        private bool ValidateData()
+        {
+            if (textBoxStudentName.Text.Trim().Length <= 0) 
+            {
+                SetStatusMessage("Student Name Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            if (comboBoxUserAccount.SelectedIndex < 0) 
+            {
+                SetStatusMessage("User Account Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            return true;
+        }
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             try
@@ -189,11 +212,12 @@ namespace ExamMaster
                 {
                     if (hlabelId.Text != string.Empty)
                     {
+                        Cursor = Cursors.WaitCursor;
                         SetStatusMessage("Deleting Student Data....", Color.LightGreen);
-                        APIStatus res1 = Task.Run(() => StudentExamAPIClass.delStudentExam(0, Int32.Parse(hlabelId.Text))).Result;
+                        APIStatus res1 = Task.Run(() => StudentExamAPIClass.delStudentExam(0, Int32.Parse(hlabelId.Text),0)).Result;
                         if (res1 is not null)
                         {
-                            APIStatus res2 = Task.Run(() => StudentAPIClass.delStudent(Int32.Parse(hlabelId.Text))).Result;
+                            APIStatus res2 = Task.Run(() => StudentAPIClass.delStudent(Int32.Parse(hlabelId.Text), 0)).Result;
                             listViewStudents.SelectedItems[0].Remove();
                             buttonClear_Click(sender, e);
                             SetStatusMessage("Student Data Deleted Successfully....", Color.LimeGreen);
@@ -202,6 +226,7 @@ namespace ExamMaster
                         {
                             SetStatusMessage("", SystemColors.Control);
                         }
+                        Cursor = Cursors.Default;
                     }
                 }
             }

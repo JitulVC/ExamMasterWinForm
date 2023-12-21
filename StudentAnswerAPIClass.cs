@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ExamMaster
 {
-    internal class StudentExamAPIClass
+    internal class StudentAnswerAPIClass
     {
-        public static async Task<List<StudentExamClass>> getStudentExams()
+        public static async Task<List<StudentAnswerClass>> getStudentAnswers()
         {
             try
             {
@@ -19,19 +19,19 @@ namespace ExamMaster
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
-                var response = await httpClient.GetAsync("studentexam");
+                var response = await httpClient.GetAsync("studentanswer");
                 var result = await response.Content.ReadAsStringAsync();
-                List<StudentExamClass> values = JsonSerializer.Deserialize<List<StudentExamClass>>(result);
+                List<StudentAnswerClass> values = JsonSerializer.Deserialize<List<StudentAnswerClass>>(result);
 
                 return values;
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:getStudentExams", ex.Message.ToString());
-                return new List<StudentExamClass>();
+                UtilClass.WriteLogs("StudentAnswerAPIClass:getStudentAnswers", ex.Message.ToString());
+                return new List<StudentAnswerClass>();
             }
         }
-        public static async Task<List<StudentExamClass>> getStudentExam(int id, int studentid, int examid)
+        public static async Task<List<StudentAnswerClass>> getStudentAnswer(int id, int studentexamid, int examquestionid)
         {
             try
             {
@@ -40,25 +40,25 @@ namespace ExamMaster
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
-                var response = await httpClient.GetAsync("studentexam/" + id + "/" + studentid + "/" + examid);
+                var response = await httpClient.GetAsync("studentanswer/" + id + "/" + studentexamid + "/" + examquestionid);
                 string result = await response.Content.ReadAsStringAsync();
                 if (result.Contains("Item not found"))
                 {
-                    return new List<StudentExamClass>();
+                    return new List<StudentAnswerClass>();
                 }
                 else
                 {
-                    List<StudentExamClass> values = JsonSerializer.Deserialize<List<StudentExamClass>>(result);
+                    List<StudentAnswerClass> values = JsonSerializer.Deserialize<List<StudentAnswerClass>>(result);
                     return values;
                 }
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:getStudentExam", ex.Message.ToString());
-                return new List<StudentExamClass>();
+                UtilClass.WriteLogs("StudentAnswerAPIClass:getStudentAnswer", ex.Message.ToString());
+                return new List<StudentAnswerClass>();
             }
         }
-        public static async Task<APIStatus> putStudentExam(StudentExamClass studentexam)
+        public static async Task<APIStatus> putStudentAnswer(StudentAnswerClass studentanswer)
         {
             try
             {
@@ -68,30 +68,25 @@ namespace ExamMaster
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
                 var dict = new Dictionary<string, object>();
-                dict.Add("studentid", studentexam.studentid);
-                dict.Add("examid", studentexam.examid);
-                dict.Add("attemptno", studentexam.attemptno);
-                dict.Add("examscore", studentexam.examscore);
-                dict.Add("examresult", studentexam.examresult);
-                dict.Add("starttime", studentexam.starttime);
-                dict.Add("endtime", studentexam.endtime);
-                dict.Add("no_of_answeredq", studentexam.no_of_answeredq);
-                dict.Add("no_of_correctq", studentexam.no_of_correctq);
+                dict.Add("studentexamid", studentanswer.studentexamid);
+                dict.Add("examquestionid", studentanswer.examquestionid);
+                dict.Add("question_response", studentanswer.question_response);
+                dict.Add("response_result", studentanswer.response_result);
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PutAsync("studentexam/" + studentexam.id + "/" + studentexam.studentid + "/" + studentexam.examid, data);
+                var response = await httpClient.PutAsync("studentanswer/" + studentanswer.id + "/" + studentanswer.studentexamid + "/" + studentanswer.examquestionid, data);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
                 return values;
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:putStudentExam", ex.Message.ToString());
+                UtilClass.WriteLogs("StudentAnswerAPIClass:putStudentAnswer", ex.Message.ToString());
                 return new APIStatus();
             }
         }
-        public static async Task<APIStatus> postStudentExam(StudentExamClass studentexam)
+        public static async Task<APIStatus> postStudentAnswer(StudentAnswerClass studentanswer)
         {
             try
             {
@@ -101,30 +96,25 @@ namespace ExamMaster
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
                 var dict = new Dictionary<string, object>();
-                dict.Add("studentid", studentexam.studentid);
-                dict.Add("examid", studentexam.examid);
-                dict.Add("attemptno", studentexam.attemptno);
-                dict.Add("examscore", studentexam.examscore);
-                dict.Add("examresult", studentexam.examresult);
-                dict.Add("starttime", studentexam.starttime);
-                dict.Add("endtime", studentexam.endtime);
-                dict.Add("no_of_answeredq", studentexam.no_of_answeredq);
-                dict.Add("no_of_correctq", studentexam.no_of_correctq);
+                dict.Add("studentexamid", studentanswer.studentexamid);
+                dict.Add("examquestionid", studentanswer.examquestionid);
+                dict.Add("question_response", studentanswer.question_response);
+                dict.Add("response_result", studentanswer.response_result);
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PostAsync("studentexam", data);
+                var response = await httpClient.PostAsync("studentanswer", data);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
                 return values;
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:postStudentExam", ex.Message.ToString());
+                UtilClass.WriteLogs("StudentAnswerAPIClass:postStudentAnswer", ex.Message.ToString());
                 return new APIStatus();
             }
         }
-        public static async Task<APIStatus> delStudentExam(int id, int studentid, int examid)
+        public static async Task<APIStatus> delStudentAnswer(int id)
         {
             try
             {
@@ -132,7 +122,7 @@ namespace ExamMaster
                 HttpClient httpClient = new HttpClient();
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
-                var response = await httpClient.DeleteAsync("studentexam/" + id + "/" + studentid + "/" + examid);
+                var response = await httpClient.DeleteAsync("studentanswer/" + id);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
 
@@ -140,24 +130,19 @@ namespace ExamMaster
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:delStudentExam", ex.Message.ToString());
+                UtilClass.WriteLogs("StudentAnswerAPIClass:delStudentAnswer", ex.Message.ToString());
                 return new APIStatus();
             }
         }
 
     }
-    public class StudentExamClass
+    public class StudentAnswerClass
     {
         public int id { get; set; }
-        public int studentid { get; set; }
-        public int examid { get; set; }
-        public int attemptno { get; set; }
-        public int examscore { get; set; }
-        public string examresult { get; set; } = string.Empty;
-        public int no_of_answeredq { get; set; }
-        public int no_of_correctq { get; set; }
-        public string starttime { get; set; } = string.Empty;
-        public string endtime { get; set; } = string.Empty;
+        public int studentexamid { get; set; }
+        public int examquestionid { get; set; }
+        public string question_response { get; set; } = string.Empty;
+        public string response_result { get; set; } = string.Empty;
         public string rec_insertedon { get; set; } = string.Empty;
         public string rec_lastupdatedon { get; set; } = string.Empty;
     }

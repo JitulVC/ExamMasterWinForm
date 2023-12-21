@@ -31,7 +31,7 @@ namespace ExamMaster
                 return new List<StudentClass>();
             }
         }
-        public static async Task<StudentClass> getStudent(int id)
+        public static async Task<StudentClass> getStudent(int id, int userid)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace ExamMaster
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
-                var response = await httpClient.GetAsync("student/" + id);
+                var response = await httpClient.GetAsync("student/" + id + "/" + userid);
                 string result = await response.Content.ReadAsStringAsync();
                 if (result.Contains("Item not found"))
                 {
@@ -73,7 +73,7 @@ namespace ExamMaster
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PutAsync("student/" + student.id, data);
+                var response = await httpClient.PutAsync("student/" + student.id + "/0", data);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
                 return values;
@@ -110,7 +110,7 @@ namespace ExamMaster
                 return new APIStatus();
             }
         }
-        public static async Task<APIStatus> delStudent(int id)
+        public static async Task<APIStatus> delStudent(int id, int userid)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace ExamMaster
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
-                var response = await httpClient.DeleteAsync("student/" + id);
+                var response = await httpClient.DeleteAsync("student/" + id + "/" + userid);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
 

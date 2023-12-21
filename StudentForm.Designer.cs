@@ -216,9 +216,10 @@
             // labelUserAccount
             // 
             labelUserAccount.AutoSize = true;
+            labelUserAccount.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelUserAccount.Location = new Point(589, 35);
             labelUserAccount.Name = "labelUserAccount";
-            labelUserAccount.Size = new Size(132, 28);
+            labelUserAccount.Size = new Size(138, 28);
             labelUserAccount.TabIndex = 17;
             labelUserAccount.Text = "User Account:";
             // 
@@ -233,9 +234,10 @@
             // labelName
             // 
             labelName.AutoSize = true;
+            labelName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelName.Location = new Point(27, 35);
             labelName.Name = "labelName";
-            labelName.Size = new Size(68, 28);
+            labelName.Size = new Size(71, 28);
             labelName.TabIndex = 0;
             labelName.Text = "Name:";
             // 

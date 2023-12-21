@@ -12,27 +12,8 @@ namespace ExamMaster
         {
             InitializeComponent();
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
-            toolStripMain.Enabled = false;
+            toolStripMain.Visible = false;
             toolStripStatusLabelMsg.Text = "Connecting to Server";
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                Task.Run(() => GetAPISessionKey()).Wait();
-
-                LoginForm loginForm = new LoginForm();
-                loginForm.MdiParent = this;
-                loginForm.FormClosed += new FormClosedEventHandler(childFormClosed);
-                loginForm.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error has occured. Please refer log file. This application will terminate.", "ExamMaster Error");
-                UtilClass.WriteLogs("LoginForm", ex.Message.ToString());
-                this.Close();
-            }
         }
 
         private async Task GetAPISessionKey()
@@ -51,57 +32,91 @@ namespace ExamMaster
                 toolStripStatusLabelMsg.Text = "Logged in as " + GlobalValues.LoginUser.username;
                 if (GlobalValues.LoginUser.roleid == 4)
                 {
+                    Cursor = Cursors.WaitCursor;
                     StudentExamForm studentexamForm = new StudentExamForm();
                     studentexamForm.MdiParent = this;
                     studentexamForm.Show();
+                    Cursor = Cursors.Default;
                 }
                 else
                 {
-                    toolStripMain.Enabled = true;
+                    toolStripMain.Visible = true;
                 }
             }
         }
 
         private void toolStripButtonUser_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             UserForm userForm = new UserForm();
             userForm.MdiParent = this;
             userForm.Show();
+            Cursor = Cursors.Default;
         }
 
         private void toolStripButtonRole_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             RoleForm roleForm = new RoleForm();
             roleForm.MdiParent = this;
             roleForm.Show();
+            Cursor = Cursors.Default;
         }
 
         private void toolStripButtonPrivilege_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             PrivilegeForm privilegeForm = new PrivilegeForm();
             privilegeForm.MdiParent = this;
             privilegeForm.Show();
+            Cursor = Cursors.Default;
         }
 
         private void toolStripButtonRolePrivilege_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             RolePrivilegeForm roleprivilegeForm = new RolePrivilegeForm();
             roleprivilegeForm.MdiParent = this;
             roleprivilegeForm.Show();
+            Cursor = Cursors.Default;
         }
 
         private void toolStripButtonExam_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             SetExamForm setexamForm = new SetExamForm();
             setexamForm.MdiParent = this;
             setexamForm.Show();
+            Cursor = Cursors.Default;
         }
 
         private void toolStripButtonStudent_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             StudentForm studentForm = new StudentForm();
             studentForm.MdiParent = this;
             studentForm.Show();
+            Cursor = Cursors.Default;
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            try
+            {
+                Task.Run(() => GetAPISessionKey()).Wait();
+
+                LoginForm loginForm = new LoginForm();
+                loginForm.MdiParent = this;
+                loginForm.FormClosed += new FormClosedEventHandler(childFormClosed);
+                System.Threading.Thread.Sleep(1000);
+                loginForm.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error has occured. Please refer log file. This application will terminate.", "ExamMaster Error");
+                UtilClass.WriteLogs("MainForm:MainForm_Shown", ex.Message.ToString());
+                this.Close();
+            }
         }
     }
 

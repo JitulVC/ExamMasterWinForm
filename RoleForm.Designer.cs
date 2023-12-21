@@ -162,9 +162,10 @@
             // labelRole
             // 
             labelRole.AutoSize = true;
+            labelRole.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelRole.Location = new Point(27, 50);
             labelRole.Name = "labelRole";
-            labelRole.Size = new Size(54, 28);
+            labelRole.Size = new Size(56, 28);
             labelRole.TabIndex = 0;
             labelRole.Text = "Role:";
             // 

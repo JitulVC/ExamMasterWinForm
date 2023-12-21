@@ -20,12 +20,14 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 InitializeComponent();
                 SetStatusMessage("Fetching Data....", Color.LightGreen);
                 Task.Run(() => InitUserList()).Wait();
                 Task.Run(() => InitRoleList()).Wait();
                 hlabelId.Text = "";
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -109,16 +111,19 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 SetStatusMessage("Fetching User Data....", Color.LightGreen);
                 UserClass list = new UserClass();
                 string id = listViewUsers.SelectedItems[0].Tag.ToString();
                 list = Task.Run(() => GetUserData(Int32.Parse(id))).Result;
                 hlabelId.Text = list.id.ToString();
                 textBoxUserAccount.Text = list.useraccount;
+                textBoxUserAccount.ReadOnly = true;
                 textBoxUserName.Text = list.username;
                 comboBoxRole.SelectedValue = list.roleid;
                 textBoxAPIKey.Text = list.apikey;
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -132,6 +137,7 @@ namespace ExamMaster
         {
             hlabelId.Text = "";
             textBoxUserAccount.Text = "";
+            textBoxUserAccount.ReadOnly = false;
             textBoxUserName.Text = "";
             comboBoxRole.SelectedIndex = -1;
             textBoxAPIKey.Text = "";
@@ -142,33 +148,39 @@ namespace ExamMaster
         {
             try
             {
-                SetStatusMessage("Updating User Data....", Color.LightGreen);
-                List<UserClass> user = new List<UserClass>();
-                user.Add(new UserClass());
-                user[0].id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
-                user[0].useraccount = textBoxUserAccount.Text;
-                user[0].username = textBoxUserName.Text;
-                user[0].passcode = "123456";
-                user[0].roleid = Int32.Parse(comboBoxRole.SelectedValue.ToString());
-                user[0].apikey = textBoxAPIKey.Text;
-                if (CheckDuplicateUserAccount())
+                if (ValidateData())
                 {
-                    APIStatus res = Task.Run(() => UserAPIClass.putUser(user)).Result;
-                    listViewUsers.SelectedItems[0].SubItems[1].Text = textBoxUserName.Text;
+                    Cursor = Cursors.WaitCursor;
+                    SetStatusMessage("Updating User Data....", Color.LightGreen);
+                    List<UserClass> user = new List<UserClass>();
+                    user.Add(new UserClass());
+
+                    user[0].id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
+                    user[0].useraccount = textBoxUserAccount.Text;
+                    user[0].username = textBoxUserName.Text;
+                    user[0].passcode = "123456";
+                    user[0].roleid = Int32.Parse(comboBoxRole.SelectedValue.ToString());
+                    user[0].apikey = textBoxAPIKey.Text;
+                    if (user[0].id > 0)
+                    {
+                        APIStatus res = Task.Run(() => UserAPIClass.putUser(user)).Result;
+                        listViewUsers.SelectedItems[0].SubItems[1].Text = textBoxUserName.Text;
+                    }
+                    else
+                    {
+                        APIStatus res = Task.Run(() => UserAPIClass.postUser(user)).Result;
+                        hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.Message);
+                        ListViewItem listItem = listViewUsers.Items.Add(user[0].useraccount);
+                        listItem.Tag = UtilClass.RegxMatch(@"\d+", res.Message);
+                        listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                        ListViewItem.ListViewSubItem subItem = listItem.SubItems.Add(user[0].username);
+                        subItem.Font = new Font("Segeo UI", 10, FontStyle.Regular);
+                        listViewUsers.SelectedItems.Clear();
+                        listViewUsers.Items[listViewUsers.Items.Count - 1].Selected = true;
+                    }
+                    SetStatusMessage("Updated Successfully....", Color.LimeGreen);
+                    Cursor = Cursors.Default;
                 }
-                else
-                {
-                    APIStatus res = Task.Run(() => UserAPIClass.postUser(user)).Result;
-                    hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.message);
-                    ListViewItem listItem = listViewUsers.Items.Add(user[0].useraccount);
-                    listItem.Tag = UtilClass.RegxMatch(@"\d+", res.message);
-                    listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                    ListViewItem.ListViewSubItem subItem = listItem.SubItems.Add(user[0].username);
-                    subItem.Font = new Font("Segeo UI", 10, FontStyle.Regular);
-                    listViewUsers.SelectedItems.Clear();
-                    listViewUsers.Items[listViewUsers.Items.Count - 1].Selected = true;
-                }
-                SetStatusMessage("Updated Successfully....", Color.LimeGreen);
             }
             catch (Exception ex)
             {
@@ -178,12 +190,36 @@ namespace ExamMaster
             }
         }
 
+        private bool ValidateData()
+        {
+            if (textBoxUserAccount.Text.Trim().Length <= 0) 
+            {
+                SetStatusMessage("User Account Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            if (textBoxUserName.Text.Trim().Length <= 0)
+            {
+                SetStatusMessage("User Name Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            if (comboBoxRole.SelectedIndex < 0)
+            {
+                SetStatusMessage("Role Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            if (hlabelId.Text == "" && CheckDuplicateUserAccount())
+            {
+                return false;
+            }
+            return true;
+        }
         private bool CheckDuplicateUserAccount()
         {
             foreach (ListViewItem eachItem in listViewUsers.Items)
             {
                 if (eachItem.Text.Equals(textBoxUserAccount.Text.Trim()))
                 {
+                    SetStatusMessage("Duplicate User Account....", Color.LemonChiffon);
                     return true;
                 }
             }
@@ -198,11 +234,13 @@ namespace ExamMaster
                 {
                     if (hlabelId.Text != String.Empty)
                     {
+                        Cursor = Cursors.WaitCursor;
                         SetStatusMessage("Deleting User Data....", Color.LightGreen);
                         APIStatus res = Task.Run(() => UserAPIClass.delUser(Int32.Parse(hlabelId.Text))).Result;
                         listViewUsers.SelectedItems[0].Remove();
                         buttonClear_Click(sender, e);
                         SetStatusMessage("User Data Deleted Successfully....", Color.LimeGreen);
+                        Cursor = Cursors.Default;
                     }
                 }
             }

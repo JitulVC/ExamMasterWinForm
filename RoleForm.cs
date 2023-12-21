@@ -16,11 +16,13 @@ namespace ExamMaster
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 InitializeComponent();
                 SetStatusMessage("Fetching Data....", Color.LightGreen);
                 Task.Run(() => InitRoleList()).Wait();
                 hlabelId.Text = "";
                 SetStatusMessage("", SystemColors.Control);
+                Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
@@ -74,27 +76,32 @@ namespace ExamMaster
         {
             try
             {
-                SetStatusMessage("Updating Role Data....", Color.LightGreen);
-                List<RoleClass> role = new List<RoleClass>();
-                role.Add(new RoleClass());
-                role[0].id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
-                role[0].role = textBoxRole.Text;
-                if (CheckDuplicateRole())
+                if (ValidateData())
                 {
-                    APIStatus res = Task.Run(() => RoleAPIClass.putRole(role)).Result;
-                    listViewRoles.SelectedItems[0].SubItems[1].Text = textBoxRole.Text;
+                    Cursor = Cursors.WaitCursor;
+                    SetStatusMessage("Updating Role Data....", Color.LightGreen);
+                    List<RoleClass> role = new List<RoleClass>();
+                    role.Add(new RoleClass());
+                    role[0].id = hlabelId.Text.Trim() == "" ? 0 : Int32.Parse(hlabelId.Text);
+                    role[0].role = textBoxRole.Text;
+                    if (role[0].id > 0)
+                    {
+                        APIStatus res = Task.Run(() => RoleAPIClass.putRole(role)).Result;
+                        listViewRoles.SelectedItems[0].SubItems[0].Text = textBoxRole.Text;
+                    }
+                    else
+                    {
+                        APIStatus res = Task.Run(() => RoleAPIClass.postRole(role)).Result;
+                        hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.Message);
+                        ListViewItem listItem = listViewRoles.Items.Add(role[0].role);
+                        listItem.Tag = UtilClass.RegxMatch(@"\d+", res.Message);
+                        listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                        listViewRoles.SelectedItems.Clear();
+                        listViewRoles.Items[listViewRoles.Items.Count - 1].Selected = true;
+                    }
+                    SetStatusMessage("Updated Successfully....", Color.LimeGreen);
+                    Cursor = Cursors.Default;
                 }
-                else
-                {
-                    APIStatus res = Task.Run(() => RoleAPIClass.postRole(role)).Result;
-                    hlabelId.Text = UtilClass.RegxMatch(@"\d+", res.message);
-                    ListViewItem listItem = listViewRoles.Items.Add(role[0].role);
-                    listItem.Tag = UtilClass.RegxMatch(@"\d+", res.message);
-                    listItem.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                    listViewRoles.SelectedItems.Clear();
-                    listViewRoles.Items[listViewRoles.Items.Count - 1].Selected = true;
-                }
-                SetStatusMessage("Updated Successfully....", Color.LimeGreen);
             }
             catch (Exception ex)
             {
@@ -104,6 +111,20 @@ namespace ExamMaster
             }
         }
 
+        private bool ValidateData()
+        {
+            if (textBoxRole.Text.Trim().Length <= 0) 
+            {
+                SetStatusMessage("Role Data Missing....", Color.LemonChiffon);
+                return false;
+            }
+            if (hlabelId.Text == "" && CheckDuplicateRole())
+            {
+                SetStatusMessage("Duplicate Role Data....", Color.LemonChiffon);
+                return false;
+            }
+            return true;
+        }
         private bool CheckDuplicateRole()
         {
             foreach (ListViewItem eachItem in listViewRoles.Items)
@@ -124,11 +145,13 @@ namespace ExamMaster
                 {
                     if (hlabelId.Text != String.Empty)
                     {
+                        Cursor = Cursors.WaitCursor;
                         SetStatusMessage("Deleting Role Data....", Color.LightGreen);
                         APIStatus res = Task.Run(() => RoleAPIClass.delRole(Int32.Parse(hlabelId.Text))).Result;
                         listViewRoles.SelectedItems[0].Remove();
                         buttonClear_Click(sender, e);
                         SetStatusMessage("Role Data Deleted Successfully....", Color.LimeGreen);
+                        Cursor = Cursors.Default;
                     }
                 }
             }

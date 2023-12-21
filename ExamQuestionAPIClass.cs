@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ExamMaster
 {
-    internal class StudentExamAPIClass
+    internal class ExamQuestionAPIClass
     {
-        public static async Task<List<StudentExamClass>> getStudentExams()
+        public static async Task<List<ExamQuestionClass>> getExamQuestions()
         {
             try
             {
@@ -19,19 +19,19 @@ namespace ExamMaster
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
-                var response = await httpClient.GetAsync("studentexam");
+                var response = await httpClient.GetAsync("examquestion");
                 var result = await response.Content.ReadAsStringAsync();
-                List<StudentExamClass> values = JsonSerializer.Deserialize<List<StudentExamClass>>(result);
+                List<ExamQuestionClass> values = JsonSerializer.Deserialize<List<ExamQuestionClass>>(result);
 
                 return values;
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:getStudentExams", ex.Message.ToString());
-                return new List<StudentExamClass>();
+                UtilClass.WriteLogs("ExamQuestionAPIClass:getExamQuestions", ex.Message.ToString());
+                return new List<ExamQuestionClass>();
             }
         }
-        public static async Task<List<StudentExamClass>> getStudentExam(int id, int studentid, int examid)
+        public static async Task<List<ExamQuestionClass>> getExamQuestion(int id, int examid)
         {
             try
             {
@@ -40,25 +40,29 @@ namespace ExamMaster
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
-                var response = await httpClient.GetAsync("studentexam/" + id + "/" + studentid + "/" + examid);
+                var response = await httpClient.GetAsync("examquestion/" + id + "/" + examid);
                 string result = await response.Content.ReadAsStringAsync();
                 if (result.Contains("Item not found"))
                 {
-                    return new List<StudentExamClass>();
+                    return new List<ExamQuestionClass>();
                 }
                 else
                 {
-                    List<StudentExamClass> values = JsonSerializer.Deserialize<List<StudentExamClass>>(result);
+                    if (id > 0)
+                    {
+                        result = "[" + result + "]";
+                    }
+                    List<ExamQuestionClass> values = JsonSerializer.Deserialize<List<ExamQuestionClass>>(result);
                     return values;
                 }
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:getStudentExam", ex.Message.ToString());
-                return new List<StudentExamClass>();
+                UtilClass.WriteLogs("ExamQuestionAPIClass:getExamQuestion", ex.Message.ToString());
+                return new List<ExamQuestionClass>();
             }
         }
-        public static async Task<APIStatus> putStudentExam(StudentExamClass studentexam)
+        public static async Task<APIStatus> putExamQuestion(ExamQuestionClass examquestion)
         {
             try
             {
@@ -68,30 +72,30 @@ namespace ExamMaster
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
                 var dict = new Dictionary<string, object>();
-                dict.Add("studentid", studentexam.studentid);
-                dict.Add("examid", studentexam.examid);
-                dict.Add("attemptno", studentexam.attemptno);
-                dict.Add("examscore", studentexam.examscore);
-                dict.Add("examresult", studentexam.examresult);
-                dict.Add("starttime", studentexam.starttime);
-                dict.Add("endtime", studentexam.endtime);
-                dict.Add("no_of_answeredq", studentexam.no_of_answeredq);
-                dict.Add("no_of_correctq", studentexam.no_of_correctq);
+                dict.Add("examid", examquestion.examid);
+                dict.Add("question", examquestion.question);
+                dict.Add("answer_type", examquestion.answer_type);
+                dict.Add("answer1", examquestion.answer1);
+                dict.Add("answer2", examquestion.answer2);
+                dict.Add("answer3", examquestion.answer3);
+                dict.Add("answer4", examquestion.answer4);
+                dict.Add("marks", examquestion.marks);
+                dict.Add("correct_answer", examquestion.correct_answer);
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PutAsync("studentexam/" + studentexam.id + "/" + studentexam.studentid + "/" + studentexam.examid, data);
+                var response = await httpClient.PutAsync("examquestion/" + examquestion.id + "/0", data);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
                 return values;
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:putStudentExam", ex.Message.ToString());
+                UtilClass.WriteLogs("ExamQuestionAPIClass:putExamQuestion", ex.Message.ToString());
                 return new APIStatus();
             }
         }
-        public static async Task<APIStatus> postStudentExam(StudentExamClass studentexam)
+        public static async Task<APIStatus> postExamQuestion(ExamQuestionClass examquestion)
         {
             try
             {
@@ -101,30 +105,30 @@ namespace ExamMaster
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
 
                 var dict = new Dictionary<string, object>();
-                dict.Add("studentid", studentexam.studentid);
-                dict.Add("examid", studentexam.examid);
-                dict.Add("attemptno", studentexam.attemptno);
-                dict.Add("examscore", studentexam.examscore);
-                dict.Add("examresult", studentexam.examresult);
-                dict.Add("starttime", studentexam.starttime);
-                dict.Add("endtime", studentexam.endtime);
-                dict.Add("no_of_answeredq", studentexam.no_of_answeredq);
-                dict.Add("no_of_correctq", studentexam.no_of_correctq);
+                dict.Add("examid", examquestion.examid);
+                dict.Add("question", examquestion.question);
+                dict.Add("answer_type", examquestion.answer_type);
+                dict.Add("answer1", examquestion.answer1);
+                dict.Add("answer2", examquestion.answer2);
+                dict.Add("answer3", examquestion.answer3);
+                dict.Add("answer4", examquestion.answer4);
+                dict.Add("marks", examquestion.marks);
+                dict.Add("correct_answer", examquestion.correct_answer);
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PostAsync("studentexam", data);
+                var response = await httpClient.PostAsync("examquestion", data);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
                 return values;
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:postStudentExam", ex.Message.ToString());
+                UtilClass.WriteLogs("ExamQuestionAPIClass:postExamQuestion", ex.Message.ToString());
                 return new APIStatus();
             }
         }
-        public static async Task<APIStatus> delStudentExam(int id, int studentid, int examid)
+        public static async Task<APIStatus> delExamQuestion(int id, int examid)
         {
             try
             {
@@ -132,7 +136,8 @@ namespace ExamMaster
                 HttpClient httpClient = new HttpClient();
                 httpClient.BaseAddress = new Uri(GlobalValues.APIUrl);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalValues.APIToken);
-                var response = await httpClient.DeleteAsync("studentexam/" + id + "/" + studentid + "/" + examid);
+               
+                var response = await httpClient.DeleteAsync("examquestion/" + id + "/" + examid);
                 var result = await response.Content.ReadAsStringAsync();
                 APIStatus values = JsonSerializer.Deserialize<APIStatus>(result);
 
@@ -140,24 +145,24 @@ namespace ExamMaster
             }
             catch (Exception ex)
             {
-                UtilClass.WriteLogs("StudentExamAPIClass:delStudentExam", ex.Message.ToString());
+                UtilClass.WriteLogs("ExamQuestionAPIClass:delExamQuestion", ex.Message.ToString());
                 return new APIStatus();
             }
         }
 
     }
-    public class StudentExamClass
+    public class ExamQuestionClass
     {
         public int id { get; set; }
-        public int studentid { get; set; }
         public int examid { get; set; }
-        public int attemptno { get; set; }
-        public int examscore { get; set; }
-        public string examresult { get; set; } = string.Empty;
-        public int no_of_answeredq { get; set; }
-        public int no_of_correctq { get; set; }
-        public string starttime { get; set; } = string.Empty;
-        public string endtime { get; set; } = string.Empty;
+        public string question { get; set; } = string.Empty;
+        public string answer_type { get; set; } = string.Empty;
+        public string answer1 { get; set; } = string.Empty;
+        public string answer2 { get; set; } = string.Empty;
+        public string answer3 { get; set; } = string.Empty;
+        public string answer4 { get; set; } = string.Empty;
+        public int marks { get; set; }
+        public string correct_answer { get; set; } = string.Empty;
         public string rec_insertedon { get; set; } = string.Empty;
         public string rec_lastupdatedon { get; set; } = string.Empty;
     }

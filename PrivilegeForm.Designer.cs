@@ -132,9 +132,10 @@
             // labelPrivilege
             // 
             labelPrivilege.AutoSize = true;
+            labelPrivilege.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point);
             labelPrivilege.Location = new Point(27, 50);
             labelPrivilege.Name = "labelPrivilege";
-            labelPrivilege.Size = new Size(91, 28);
+            labelPrivilege.Size = new Size(95, 28);
             labelPrivilege.TabIndex = 0;
             labelPrivilege.Text = "Privilege:";
             // 
