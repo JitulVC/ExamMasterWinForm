@@ -18,7 +18,7 @@ namespace ExamMaster
         public LoginForm()
         {
             InitializeComponent();
-            textBoxUserAccount.Text = "chongglenda"; // "beckschng";
+            textBoxUserAccount.Text = "beckschng";  //"chongglenda"; 
             textBoxPasscode.Text = "123456";
         }
 

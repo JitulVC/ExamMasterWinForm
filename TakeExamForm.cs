@@ -107,6 +107,7 @@ namespace ExamMaster
                 groupBoxQuestion.Text = "Question: " + idx + "/" + NoOfQuestions;
                 groupBoxQuestion.ForeColor = SystemColors.ControlText;
             }
+
             textBoxQuestion.Text = examQuestions[idx - 1].question;
             textBoxAnswer1.Text = examQuestions[idx - 1].answer1;
             textBoxAnswer2.Text = examQuestions[idx - 1].answer2;

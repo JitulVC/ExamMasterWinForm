@@ -147,6 +147,8 @@ namespace ExamMaster
         public int duration { get; set; }
         public int totalscore { get; set; }
         public int passingscore { get; set; }
+        public int difficulty_level { get; set; }
+        public int subjectid { get; set; }
         public string rec_insertedon { get; set; } = string.Empty;
         public string rec_lastupdatedon { get; set; } = string.Empty;
     }

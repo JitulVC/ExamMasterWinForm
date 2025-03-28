@@ -73,14 +73,23 @@ namespace ExamMaster
 
                 var dict = new Dictionary<string, object>();
                 dict.Add("examid", examquestion.examid);
+                dict.Add("isimgquestion", examquestion.isimgquestion);
                 dict.Add("question", examquestion.question);
+                dict.Add("questionimg", examquestion.questionimg);
                 dict.Add("answer_type", examquestion.answer_type);
+                dict.Add("isimganswer", examquestion.isimganswer);
                 dict.Add("answer1", examquestion.answer1);
                 dict.Add("answer2", examquestion.answer2);
                 dict.Add("answer3", examquestion.answer3);
                 dict.Add("answer4", examquestion.answer4);
+                dict.Add("answer1img", examquestion.answer1img);
+                dict.Add("answer2img", examquestion.answer2img);
+                dict.Add("answer3img", examquestion.answer3img);
+                dict.Add("answer4img", examquestion.answer4img);
                 dict.Add("marks", examquestion.marks);
                 dict.Add("correct_answer", examquestion.correct_answer);
+                dict.Add("answerexplanation", examquestion.answerexplanation);
+                dict.Add("difficultylevel", examquestion.difficultylevel);
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -106,14 +115,23 @@ namespace ExamMaster
 
                 var dict = new Dictionary<string, object>();
                 dict.Add("examid", examquestion.examid);
+                dict.Add("isimgquestion", examquestion.isimgquestion);
                 dict.Add("question", examquestion.question);
+                dict.Add("questionimg", examquestion.questionimg);
                 dict.Add("answer_type", examquestion.answer_type);
+                dict.Add("isimganswer", examquestion.isimganswer);
                 dict.Add("answer1", examquestion.answer1);
                 dict.Add("answer2", examquestion.answer2);
                 dict.Add("answer3", examquestion.answer3);
                 dict.Add("answer4", examquestion.answer4);
+                dict.Add("answer1img", examquestion.answer1img);
+                dict.Add("answer2img", examquestion.answer2img);
+                dict.Add("answer3img", examquestion.answer3img);
+                dict.Add("answer4img", examquestion.answer4img);
                 dict.Add("marks", examquestion.marks);
                 dict.Add("correct_answer", examquestion.correct_answer);
+                dict.Add("answerexplanation", examquestion.answerexplanation);
+                dict.Add("difficultylevel", examquestion.difficultylevel);
                 var json = JsonSerializer.Serialize(dict);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -155,14 +173,23 @@ namespace ExamMaster
     {
         public int id { get; set; }
         public int examid { get; set; }
+        public int isimgquestion { get; set; }
         public string question { get; set; } = string.Empty;
+        public string questionimg { get; set; } = string.Empty;
         public string answer_type { get; set; } = string.Empty;
+        public int isimganswer { get; set; }
         public string answer1 { get; set; } = string.Empty;
         public string answer2 { get; set; } = string.Empty;
         public string answer3 { get; set; } = string.Empty;
         public string answer4 { get; set; } = string.Empty;
+        public string answer1img { get; set; } = string.Empty;
+        public string answer2img { get; set; } = string.Empty;
+        public string answer3img { get; set; } = string.Empty;
+        public string answer4img { get; set; } = string.Empty;
         public int marks { get; set; }
         public string correct_answer { get; set; } = string.Empty;
+        public string answerexplanation { get; set; } = string.Empty;
+        public int difficultylevel { get; set; }
         public string rec_insertedon { get; set; } = string.Empty;
         public string rec_lastupdatedon { get; set; } = string.Empty;
     }
